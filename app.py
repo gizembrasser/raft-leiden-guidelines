@@ -22,6 +22,7 @@ vectorstore = Chroma.from_documents(documents=splits, embedding=embeddings)
 
 # Load custom RAFT model and tokenizer from Hugging Face
 model, tokenizer = FastLanguageModel.from_pretrained("gizembrasser/FineLlama-3.1-8B")
+FastLanguageModel.for_inference(model) # Enable native 2x faster inference
 
 def raft_llm(question, context):
     formatted_prompt = f"Question: {question}\n\nContext: {context}"
@@ -35,7 +36,7 @@ def raft_llm(question, context):
     ).to("cuda")
 
     text_streamer = TextStreamer(tokenizer)
-    outputs = model.generate(input_ids=inputs['input_ids'], streamer=text_streamer, max_new_tokens=128, use_cache=True)
+    outputs = model.generate(input_ids=inputs, streamer=text_streamer, max_new_tokens=128, use_cache=True)
 
     response = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return response
