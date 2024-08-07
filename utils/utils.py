@@ -11,9 +11,3 @@ def jsonl_to_csv(input_file, output_file):
 
     # Save to CSV
     df.to_csv(output_file, index=False)
-
-
-input_file = 'output/raft_dataset.jsonl'
-output_file = 'output/raft_dataset.csv'
-
-jsonl_to_csv(input_file, output_file)

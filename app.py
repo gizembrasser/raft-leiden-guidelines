@@ -1,11 +1,11 @@
 import torch
 import streamlit as st
-from unsloth import FastLanguageModel
-from transformers import TextStreamer
+from transformers import AutoTokenizer, AutoModelForCausalLM, TextStreamer
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import OllamaEmbeddings
+
 
 st.title("Ask questions about the Leiden Guidelines PDF.")
 st.caption("Chat with a Llama-3.1 model that has been fine-tuned on a RAFT dataset based on the Leiden Guidelines.")
@@ -21,8 +21,8 @@ embeddings = OllamaEmbeddings(model="llama3")
 vectorstore = Chroma.from_documents(documents=splits, embedding=embeddings)
 
 # Load custom RAFT model and tokenizer from Hugging Face
-model, tokenizer = FastLanguageModel.from_pretrained("gizembrasser/FineLlama-3.1-8B")
-FastLanguageModel.for_inference(model) # Enable native 2x faster inference
+tokenizer = AutoTokenizer.from_pretrained("gizembrasser/FineLlama-3.1-8B")
+model = AutoModelForCausalLM.from_pretrained("gizembrasser/FineLlama-3.1-8B")
 
 def raft_llm(question, context):
     formatted_prompt = f"Question: {question}\n\nContext: {context}"
@@ -33,7 +33,7 @@ def raft_llm(question, context):
         tokenize=True,
         add_generation_prompt=True,
         return_tensors="pt",
-    ).to("cuda")
+    )
 
     text_streamer = TextStreamer(tokenizer)
     outputs = model.generate(input_ids=inputs, streamer=text_streamer, max_new_tokens=128, use_cache=True)
