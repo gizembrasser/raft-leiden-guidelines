@@ -3,7 +3,7 @@ import json
 
 def jsonl_to_csv(input_file, output_file):
     # Read the JSONL file
-    with open(input_file, 'r') as f:
+    with open(input_file, "r") as f:
         data = [json.loads(line) for line in f]
 
     # Convert to DataFrame

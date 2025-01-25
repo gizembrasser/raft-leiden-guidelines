@@ -7,7 +7,7 @@ from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import OllamaEmbeddings
 
 
-st.title("Ask questions about the Leiden Guidelines PDF.")
+st.title("Ask any question about the Leiden Guidelines PDF.")
 st.caption("Chat with a Llama-3.1 model that has been fine-tuned on a RAFT dataset based on the Leiden Guidelines.")
 
 # Load the data

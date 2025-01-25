@@ -16,7 +16,7 @@ To set up the project environment and install the necessary dependencies, you'll
 2. Set up a virtual environment with Python 3.11 version:
 
 ```
-python3.11 -m venv .venv
+python -m venv .venv
 source .venv\Scripts\activate
 ```
 
